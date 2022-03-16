@@ -8,6 +8,7 @@ TagManager:
   - inimigo
   - moeda
   - porta
+  - Direcao
   layers:
   - Default
   - TransparentFX

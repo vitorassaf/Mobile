@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public ParticleSystem particle;
-    public ParticleSystem.MainModule m;
+    public static ParticleSystem particle;
+    public static ParticleSystem.MainModule m;
     public float timeC;
     public Camera cam;
     public float speed;
@@ -17,16 +17,18 @@ public class Player : MonoBehaviour
     public GameObject[] shoots;
     public Transform startR;
     public Transform startL;
-    public Animator anima;
+    public static Animator anima;
     public bool right;
     public Transform destino;
+    public Joystick joystick;
 
-    public bool podeatirar;
-    private bool esfriar;
+    public static bool podeatirar;
+    public static bool esfriar;
     private float tiro = 0;
     public Scrollbar tiromax;
     public int pontos;
     public Text pontuacao;
+    public static bool countTime;
     // Start is called before the first frame update
     void Start()
     {
@@ -49,15 +51,22 @@ public class Player : MonoBehaviour
         if(esfriar)
         {
             tiro -= Time.deltaTime/10;
+           
         }
         if(tiro >= 0.9f)
         {
             podeatirar = false;
+            Debug.Log(podeatirar);
         }
         else
         {
             podeatirar = true;
         }
+        if (tiro < 0f)
+        {
+            esfriar = false;
+        }
+       
         if (Input.GetKey(KeyCode.X))
         {
             
@@ -68,19 +77,35 @@ public class Player : MonoBehaviour
                 m.startColor = Color.red;
             }
         }
-        if (Input.GetKeyUp(KeyCode.X) && podeatirar)
-        {
-            particle.gameObject.SetActive(false);
-            Shoot();
-            anima.SetTrigger("shoot");
-            timeC = 0;
-            m.startColor = Color.green;
-            esfriar = true;
-        }
+        //if (Input.GetKeyUp(KeyCode.X) && podeatirar)
+        // {
+        //    particle.gameObject.SetActive(false);
+        //   Shoot();
+        //   anima.SetTrigger("shoot");
+        //   timeC = 0;
+        //    m.startColor = Color.green;
+        //    esfriar = true;
+        //}
         cam.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
-        horizontalInput = Input.GetAxis("Horizontal");
-        rb2d.velocity = new Vector2(horizontalInput * speed, rb2d.velocity.y);
-        if (horizontalInput > 0.01f)
+        //horizontalInput = Input.GetAxis("Horizontal");
+        //horizontalInput = joystick.Horizontal;
+
+        //rb2d.velocity = new Vector2(horizontalInput * speed, rb2d.velocity.y);
+        rb2d.velocity = new Vector2(horizontalInput, rb2d.velocity.y);
+        if(joystick.Horizontal >= 0.2f)
+        {
+            horizontalInput = speed;
+        }
+        else if  (joystick.Horizontal <= -0.2f)
+        {
+            horizontalInput = -speed;
+        }
+        else
+        {
+            horizontalInput = 0;
+          
+        }
+        if (horizontalInput > 0.2f)
         {
             //anima.SetFloat("run", Mathf.Abs(horizontalInput));
             anima.SetBool("run", true);
@@ -99,12 +124,32 @@ public class Player : MonoBehaviour
             //anima.SetFloat("run", Mathf.Abs(horizontalInput));
             anima.SetBool("run",false);
         }
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+        if (joystick.Vertical >=0.5 && grounded)
         {
             Jump();
         }
 
+        if(countTime)
+        {
+            timeC += Time.deltaTime;
+            if (timeC >= 2)
+            {
+                m.startColor = Color.red;
+            }
+        }
         
+    }
+    public void Jumpbutton()
+    {
+        if(grounded)
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x, speed);
+            grounded = false;
+            anima.SetBool("jump", true);
+        }
+        
+
+
     }
     void Jump()
     {
@@ -137,7 +182,7 @@ public class Player : MonoBehaviour
         
     }
 
-    void Shoot()
+    public void Shoot()
     {
         if (!sprite.flipX)
         {
@@ -179,6 +224,24 @@ public class Player : MonoBehaviour
                 Instantiate(shoots[2], startL);
                 tiro += 0.3f;
             }
+            
         }
+        countTime = false;
+        timeC = 0;
+    }
+    public static void Carregar()
+    {
+        particle.gameObject.SetActive(true);
+        countTime = true;
+    }
+
+    public static void Tiro ()
+    {
+        
+            particle.gameObject.SetActive(false);
+            anima.SetTrigger("shoot");
+            m.startColor = Color.green;
+        
+       
     }
 }
