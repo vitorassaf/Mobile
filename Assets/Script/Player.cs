@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+
 
 public class Player : MonoBehaviour
 {
+   
+
     public static ParticleSystem particle;
     public static ParticleSystem.MainModule m;
     public float timeC;
@@ -21,6 +26,7 @@ public class Player : MonoBehaviour
     public bool right;
     public Transform destino;
     public Joystick joystick;
+
 
     public static bool podeatirar;
     public static bool esfriar;
@@ -179,7 +185,14 @@ public class Player : MonoBehaviour
         {
             transform.position = destino.transform.position;
         }
-        
+        if (collision.gameObject.tag == "Zumbi")
+        {
+            transform.position = destino.transform.position;
+        }
+        if (collision.gameObject.tag == "Fim")
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Fim");
+        }
     }
 
     public void Shoot()

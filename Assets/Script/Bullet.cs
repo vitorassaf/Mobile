@@ -41,7 +41,15 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject.tag == "porta")
         {
             Destroy(collision.gameObject);
+            Destroy(gameObject);
         }
+        if (collision.gameObject.tag == "Zumbi")
+        {
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
+        }
+
     }
+    
  
 }

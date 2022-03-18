@@ -116,6 +116,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  CloseDoor: {fileID: 0}
+  OpenDoor: {fileID: 0}
 --- !u!61 &-7454630795451010602
 BoxCollider2D:
   m_ObjectHideFlags: 0

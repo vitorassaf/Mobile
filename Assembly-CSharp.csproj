@@ -72,6 +72,7 @@
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
     <Compile Include="Assets\Script\Bullet.cs" />
     <Compile Include="Assets\Script\ButtonHold.cs" />
+    <Compile Include="Assets\Script\Corrida.cs" />
     <Compile Include="Assets\Script\Player.cs" />
     <Compile Include="Assets\Script\configuracao.cs" />
     <Compile Include="Assets\Script\inimigoscript.cs" />

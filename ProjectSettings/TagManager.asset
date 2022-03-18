@@ -9,6 +9,8 @@ TagManager:
   - moeda
   - porta
   - Direcao
+  - Fim
+  - Zumbi
   layers:
   - Default
   - TransparentFX
